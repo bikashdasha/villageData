@@ -136,13 +136,13 @@
       <article>
 <!--- #BANNER
       -->
-<h2> new website comming soon</h2>
+
        <section class="section banner" aria-label="banner" data-section>
   <div class="container">
     <ul class="banner-list">
       <li>
         <div class="banner-card banner-card-1 has-before hover:shine">
-          <p class="card-subtitle">Ambatola  Register</p>
+          <p class="card-subtitle">Ambatola Commity Register</p>
           <h2 class="h2 card-title">ALL MEMBERS</h2>
           
           <button id="viewMoreBtn" class="btn btn-secondary">View More</button>
@@ -172,84 +172,101 @@
 </div>
 
 <script>
-// Dynamic Excel Loader
-async function loadExcelData() {
-  const loadingHTML = `<tr><td colspan="20" style="text-align:center; padding:30px; color:#0b6b3f;">
-    <strong>Loading Register...</strong>
-  </td></tr>`;
-  
-  document.getElementById('tableBody').innerHTML = loadingHTML;
+// ===== TABLE HEADER =====
+const tableHeader = `
+<tr>
+  <th>S.No</th>
+  <th>Name</th>
+  <th>Mobile No.</th>
+  <th>April</th>
+</tr>
+`;
 
-  try {
-    const response = await fetch('./Ambatola_Commite.xlsx');
-    
-    if (!response.ok) throw new Error("Excel file not found");
+// ===== TABLE BODY (ALL 63 ROWS) =====
+const tableData = `
+<tr><td>1</td><td>Banty (ବଣ୍ଟି )</td><td>6370-566-133</td><td>101</td></tr>
+<tr><td>2</td><td>Anil Ojha (ଅନିଲ ଓଝା )</td><td>6371-691-425</td><td>100</td></tr>
+<tr><td>3</td><td>Monoj Dash (ପାକୁଆ ଦାସ )</td><td>7873-999-634</td><td>100</td></tr>
+<tr><td>4</td><td>Soraj Prusty (ସରୋଜ ପୃଷ୍ଟି )</td><td>9090-599-475</td><td>100</td></tr>
+<tr><td>5</td><td>Avimanyu Ojha (ଅଭିନ ଓଝା)</td><td>9326-390-151</td><td>100</td></tr>
+<tr><td>6</td><td>Prakash Jena (ଟୁନୁଲ ଜେନା )</td><td>8908-866-546</td><td>100</td></tr>
+<tr><td>7</td><td>Sripati Sahou (ବଳିଆ ସାହୁ)</td><td>7499-046-851</td><td>100</td></tr>
+<tr><td>8</td><td>Bapuni Barik (ବାପୁନି ବାରିକ )</td><td>9767-657-282</td><td>100</td></tr>
+<tr><td>9</td><td>Ananta Ojha (ବାପି ଓଝା )</td><td>8917-233-635</td><td>100</td></tr>
+<tr><td>10</td><td>Prakash Rout (ଚଣ୍ଡ ରାଉତ )</td><td>7978-807-115</td><td>100</td></tr>
+<tr><td>11</td><td>Sontosh Dash (ବାପି ଦାଶ)</td><td>9090-936-830</td><td>100</td></tr>
+<tr><td>12</td><td>Ramesh Barik (ଫୁଶିଆ ବାରିକ )</td><td>8637-293-940</td><td>100</td></tr>
+<tr><td>13</td><td>Raka (ରାକା )</td><td>7855-903-394</td><td>100</td></tr>
+<tr><td>14</td><td>Mantu (ମଣ୍ଟୁ ଦାସ )</td><td>8117-038-955</td><td>100</td></tr>
+<tr><td>15</td><td>Muna (ମୁନା ସାମଲ)</td><td>9337-182-365</td><td>100</td></tr>
+<tr><td>16</td><td>Rajesh Bata (ରାଜା ବଟ)</td><td>9124-561-507</td><td>100</td></tr>
+<tr><td>17</td><td>Ajit Ojha (ଟୁଟୁ ଓଝା )</td><td>34567898765</td><td>100</td></tr>
+<tr><td>18</td><td>Nanda Barik (ନଣ୍ଡା ବାରିକ)</td><td>7876787678</td><td>100</td></tr>
 
-    const arrayBuffer = await response.arrayBuffer();
-    const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-    
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+<tr><td>19</td><td>Gokula Dash (ଗୋକୁଳ ଦାଶ)</td><td>1234567890</td><td>X</td></tr>
+<tr><td>20</td><td>Balaram Samal (ବଳିଆ ସାମଲ )</td><td>1234567890</td><td>X</td></tr>
+<tr><td>21</td><td>Braja Prusty (ବ୍ରଜ ପୃଷ୍ଟି )</td><td>8260-553-416</td><td>X</td></tr>
+<tr><td>22</td><td>Bijay Dash (ବିଜୁ ଦାଶ)</td><td>9348-263-710</td><td>X</td></tr>
+<tr><td>23</td><td>Manash Jena (କୁନା ଜେନା )</td><td>9658-729-240</td><td>100</td></tr>
+<tr><td>24</td><td>Madhusudan Barik (ମଧୂଆ ବାରିକ)</td><td>9853-430-958</td><td>X</td></tr>
+<tr><td>25</td><td>Sudam Barik (ସୁଦା ବାରିକ)</td><td>1234567890</td><td>X</td></tr>
+<tr><td>26</td><td>Subash Barik (ସୁବା ବାରିକ )</td><td>9078-857-992</td><td>X</td></tr>
+<tr><td>27</td><td>Deepak Ojha (ବାବୁଲି ଓଝା)</td><td>9708-587-020</td><td>X</td></tr>
+<tr><td>28</td><td>Harihara Sahu (ହରିଆ ସାହୁ)</td><td>9348-413-868</td><td>X</td></tr>
+<tr><td>29</td><td>Ajaya Dash (ବାବୁ ଦାଶ)</td><td>9853-208-734</td><td>X</td></tr>
+<tr><td>30</td><td>Pravat Ojha (ପେନା ଓଝା )</td><td>1234567890</td><td>X</td></tr>
+<tr><td>31</td><td>Amresh Ojha (ମିଟୁ ଓଝା )</td><td>9337-032-605</td><td>X</td></tr>
+<tr><td>32</td><td>Promod Rout (ପ୍ରମୋଦ ରାଉତ )</td><td>7377-817-090</td><td>X</td></tr>
+<tr><td>33</td><td>Monoj Rout (କାଳିଆ ରାଉତ )</td><td>7205-546-772</td><td>X</td></tr>
+<tr><td>34</td><td>Ashok Ojha (ଜିତୁ ଓଝା)</td><td>9937-308-082</td><td>X</td></tr>
+<tr><td>35</td><td>Papuna Dash (ପପୁନା ଦାସ)</td><td>8249-767-174</td><td>X</td></tr>
+<tr><td>36</td><td>Chandramani Paramanik (ଘୁଡୁକ ପରମାଣିକ)</td><td>9777-753-050</td><td>X</td></tr>
+<tr><td>37</td><td>Atala Samal (ଅଟଳ ସାମଲ)</td><td>9658-286-411</td><td>X</td></tr>
+<tr><td>38</td><td>Saniaa Barik (ସନିଆ ବାରିକ )</td><td>8249-489-911</td><td>100</td></tr>
+<tr><td>39</td><td>Rajendra Dash (ରାଜୁଆ ଦାସ )</td><td>7008-089-971</td><td>X</td></tr>
+<tr><td>40</td><td>Kratik Ojha (ଚଗଲା ଓଝା )</td><td>8249-169-370</td><td>X</td></tr>
+<tr><td>41</td><td>Achuta Ojha (ଟେରୁ ଓଝା )</td><td>7992-741-259</td><td>X</td></tr>
+<tr><td>42</td><td>Ashok Barik (ହୁଣ୍ଡା ବାରିକ )</td><td>8908-738-199</td><td>X</td></tr>
+<tr><td>43</td><td>Kaivalya Barik (ଟୁକୁଆ ବାରିକ )</td><td>7735-547-201</td><td>X</td></tr>
+<tr><td>44</td><td>Prakash Barik (ଗେଣ୍ଡୁ ବାରିକ )</td><td>1234567890</td><td>X</td></tr>
+<tr><td>45</td><td>Subash Ojha (ଠେକୁଆ ଓଝା )</td><td>9348-614-443</td><td>X</td></tr>
+<tr><td>46</td><td>Sunil Ojha (ନୀଳମଣି ଓଝା )</td><td>7008-948-027</td><td>X</td></tr>
+<tr><td>47</td><td>Pintu Dash (ପିଣ୍ଟୁ ଦାଶ)</td><td>9337-194-930</td><td>X</td></tr>
+<tr><td>48</td><td>Babul Samal (ବବୁଲ ସାମଲ)</td><td>1234567890</td><td>X</td></tr>
+<tr><td>49</td><td>Bishnu Ojha (ଦିପୁ ଓଝା )</td><td>9853-836-392</td><td>X</td></tr>
+<tr><td>50</td><td>Gandhi (ଗାନ୍ଧୀ )</td><td>6370-211-427</td><td>X</td></tr>
+<tr><td>51</td><td>Dipuna (ଦିପୁନ ବାରିକ)</td><td>1234567890</td><td>X</td></tr>
+<tr><td>52</td><td>Papuna (ପପୁନା ବାରିକ )</td><td>7064-192-076</td><td>X</td></tr>
+<tr><td>53</td><td>Boka (ବୋକା )</td><td>6371-749-877</td><td>X</td></tr>
+<tr><td>54</td><td>Liton (ଲିଟନ ବାରିକ )</td><td>8117-926-034</td><td>X</td></tr>
+<tr><td>55</td><td>Tera (ଟେରା ଓଝା )</td><td>7809-595-694</td><td>X</td></tr>
+<tr><td>56</td><td>Kunu (କୁନୁ ଓଝା )</td><td>1234567890</td><td>X</td></tr>
+<tr><td>57</td><td>Sonu (ସୋନୁ ବାରିକ )</td><td>7787-938-501</td><td>100</td></tr>
+<tr><td>58</td><td>Kaku (କକୁ ବାରିକ)</td><td>1234567890</td><td>X</td></tr>
+<tr><td>59</td><td>Thuna (ଠୁଣା ଦାସ)</td><td>8260-778-279</td><td>X</td></tr>
+<tr><td>60</td><td>Chubuna (ଚୁବୁନା )</td><td>8456-825-255</td><td>X</td></tr>
+<tr><td>61</td><td>Sipu Barik (ସିପୁ ବାରିକ)</td><td>7205-607-730</td><td>X</td></tr>
 
-    if (jsonData.length < 2) {
-      throw new Error("No data in Excel");
-    }
+<tr class="row-62"><td>62</td><td><b>Collection</b></td><td><b>Monthly</b></td><td><b>2101</b></td></tr>
+<tr class="row-63"><td>63</td><td><b>Total</b></td><td>2101</td><td>__</td></tr>
+`;
 
-    const headers = jsonData[0];
-    const rows = jsonData.slice(1);
-
-    // Render Header
-    const thead = document.getElementById('tableHead');
-    thead.innerHTML = `<tr>${headers.map(h => `<th>${h || ''}</th>`).join('')}</tr>`;
-
-    // Render Rows
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = '';
-
-    rows.forEach(row => {
-      if (row.length > 1 && (row[0] || row[1])) {
-        const tr = document.createElement('tr');
-        
-        const sno = String(row[0] || '').trim();
-
-        // Add special classes based on S.No.
-        if (sno === '62' || sno === 62) {
-          tr.classList.add('row-62');
-        } 
-        else if (sno === '63' || sno === 63) {
-          tr.classList.add('row-63');
-        }
-
-        tr.innerHTML = row.map(cell => `<td>${cell !== undefined && cell !== null ? cell : ''}</td>`).join('');
-        tbody.appendChild(tr);
-      }
-    });
-
-  } catch (error) {
-    console.error(error);
-    document.getElementById('tableBody').innerHTML = `
-      <tr><td colspan="20" style="color:red; text-align:center; padding:40px;">
-        ❌ Could not load Excel file.<br>
-        Make sure <strong>Ambatola_Commite.xlsx</strong> is in the same folder.
-      </td></tr>`;
-  }
+// LOAD FUNCTION
+function loadTableData() {
+  document.getElementById('tableHead').innerHTML = tableHeader;
+  document.getElementById('tableBody').innerHTML = tableData;
 }
 
-// Button Click
+// BUTTON
 document.getElementById('viewMoreBtn').addEventListener('click', function() {
   document.getElementById('registerPopup').style.display = 'flex';
-  loadExcelData();
+  loadTableData();
 });
 
-// Close Popup
-document.getElementById('closePopup').addEventListener('click', () => {
+// CLOSE
+document.getElementById('closePopup').onclick = () => {
   document.getElementById('registerPopup').style.display = 'none';
-});
-
-document.getElementById('registerPopup').addEventListener('click', function(e) {
-  if (e.target === this) this.style.display = 'none';
-});
+};
 </script>
 
 <style>
@@ -395,7 +412,7 @@ document.getElementById('registerPopup').addEventListener('click', function(e) {
       </article>
     </main>
 
-<h2>Design by Bikash Dash.</h2>
+
 
     <!-- 
     - custom js link
