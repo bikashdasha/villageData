@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ambatola</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <!-- 
+    - favicon
+  -->
+    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml" />
+
+    <!-- 
+    - custom css link
+  -->
+    <link rel="stylesheet" href="./assets/css/style.css" />
+
+    <!-- 
+    - google font link
+  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- 
+    - preload images
+  -->
+    <link rel="preload" as="image" href="./assets/images/logo.png" />
+    <link rel="preload" as="image" href="./assets/images/hero-banner-1.jpg" />
+    <link rel="preload" as="image" href="./assets/images/hero-banner-2.jpg" />
+    <link rel="preload" as="image" href="./assets/images/hero-banner-3.jpg" />
+  </head>
+  <body id="top">
+    <!-- 
+    - #HEADER
+  -->
+
+    <header class="header">
+      <div class="alert">
+        <div class="container">
+          <p class="alert-text">
+            ଆମ୍ବତଳା ଆମ ପରିବାର <br />
+            ଭାଇ ଚାରାର ଗନ୍ତାଘର !!!
+          </p>
+        </div>
+      </div>
+
+      <div class="header-top" data-header>
+        <div class="container">
+          <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
+            <span class="line line-1"></span>
+            <span class="line line-2"></span>
+            <span class="line line-3"></span>
+          </button>
+
+          <div class="input-wrapper">
+            <input
+              type="search"
+              name="search"
+              placeholder="Search product"
+              class="search-field"
+            />
+
+            <button class="search-submit" aria-label="search">
+              <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+            </button>
+          </div>
+
+          <div class="header-actions"></div>
+
+          <nav class="navbar">
+            <ul class="navbar-list">
+              <li>
+                <a href="#home" class="navbar-link has-after">HOME</a>
+              </li>
+
+              <li>
+                <a href="#collection" class="navbar-link has-after">ABOUT</a>
+              </li>
+
+              <li>
+                <a href="#shop" class="navbar-link has-after">Shop</a>
+              </li>
+
+              <li>
+                <a href="#offer" class="navbar-link has-after">GALLERY</a>
+              </li>
+
+              <li>
+                <a href="#blog" class="navbar-link has-after">CONTACT</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- 
+    - #MOBILE NAVBAR
+  -->
+
+    <div class="sidebar">
+      <div class="mobile-navbar" data-navbar>
+        <div class="wrapper">
+        </div>
+
+        <ul class="navbar-list">
+          <li>
+            <a href="#home" class="navbar-link" data-nav-link>Home</a>
+          </li>
+
+          <li>
+            <a href="#collection" class="navbar-link" data-nav-link>ABOUT</a>
+          </li>
+
+          <li>
+          </li>
+
+          <li>
+          </li>
+
+          <li>
+          </li>
+        </ul>
+      </div>
+
+      <div class="overlay" data-nav-toggler data-overlay></div>
+    </div>
+
+    <main>
+      <article>
+<!--- #BANNER
+      -->
+
+       <section class="section banner" aria-label="banner" data-section>
+  <div class="container">
+    <ul class="banner-list">
+      <li>
+        <div class="banner-card banner-card-1 has-before hover:shine">
+          <p class="card-subtitle">Ambatola Commity Register</p>
+          <h2 class="h2 card-title">ALL MEMBERS</h2>
+          
+          <button id="viewMoreBtn" class="btn btn-secondary">View More</button>
+
+          <div class="has-bg-image" style="background-image: url('./assets/image/book.png');"></div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- REGISTER POPUP -->
+<div id="registerPopup" class="popup-overlay">
+  <div class="popup-content">
+    <div class="popup-header">
+      <h2>Our Register - AY 2026</h2>
+      <button class="close-btn" id="closePopup">✕</button>
+    </div>
+    
+    <div class="table-container">
+      <table id="registerTable" class="register-table">
+        <thead id="tableHead"></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+// Dynamic Excel Loader
+async function loadExcelData() {
+  const loadingHTML = `<tr><td colspan="20" style="text-align:center; padding:30px; color:#0b6b3f;">
+    <strong>Loading Register...</strong>
+  </td></tr>`;
+  
+  document.getElementById('tableBody').innerHTML = loadingHTML;
+
+  try {
+    const response = await fetch('./Ambatola_Commite.xlsx');
+    
+    if (!response.ok) throw new Error("Excel file not found");
+
+    const arrayBuffer = await response.arrayBuffer();
+    const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+    
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+    if (jsonData.length < 2) {
+      throw new Error("No data in Excel");
+    }
+
+    const headers = jsonData[0];
+    const rows = jsonData.slice(1);
+
+    // Render Header
+    const thead = document.getElementById('tableHead');
+    thead.innerHTML = `<tr>${headers.map(h => `<th>${h || ''}</th>`).join('')}</tr>`;
+
+    // Render Rows
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '';
+
+    rows.forEach(row => {
+      if (row.length > 1 && (row[0] || row[1])) {
+        const tr = document.createElement('tr');
+        
+        const sno = String(row[0] || '').trim();
+
+        // Add special classes based on S.No.
+        if (sno === '62' || sno === 62) {
+          tr.classList.add('row-62');
+        } 
+        else if (sno === '63' || sno === 63) {
+          tr.classList.add('row-63');
+        }
+
+        tr.innerHTML = row.map(cell => `<td>${cell !== undefined && cell !== null ? cell : ''}</td>`).join('');
+        tbody.appendChild(tr);
+      }
+    });
+
+  } catch (error) {
+    console.error(error);
+    document.getElementById('tableBody').innerHTML = `
+      <tr><td colspan="20" style="color:red; text-align:center; padding:40px;">
+        ❌ Could not load Excel file.<br>
+        Make sure <strong>Ambatola_Commite.xlsx</strong> is in the same folder.
+      </td></tr>`;
+  }
+}
+
+// Button Click
+document.getElementById('viewMoreBtn').addEventListener('click', function() {
+  document.getElementById('registerPopup').style.display = 'flex';
+  loadExcelData();
+});
+
+// Close Popup
+document.getElementById('closePopup').addEventListener('click', () => {
+  document.getElementById('registerPopup').style.display = 'none';
+});
+
+document.getElementById('registerPopup').addEventListener('click', function(e) {
+  if (e.target === this) this.style.display = 'none';
+});
+</script>
+
+<style>
+/* ====================== REGISTER POPUP ====================== */
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.popup-content {
+  background: white;
+  width: 100%;
+  max-width: 1280px;
+  max-height: 95vh;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.popup-header {
+  padding: 18px 20px;
+  background: #0b6b3f;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-header h2 {
+  margin: 0;
+  font-size: 2.2rem;
+  color: white;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.close-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.table-container {
+  overflow-x: auto;
+  padding: 10px;
+  max-height: calc(95vh - 70px);
+}
+
+.register-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.5rem;
+  background: white;
+}
+
+.register-table th,
+.register-table td {
+  padding: 12px 10px;
+  text-align: left;
+  border: 1px solid #555;           /* Full borders */
+  white-space: nowrap;
+}
+
+.register-table th {
+  background: #0b6b3f;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Column Alignment */
+.register-table td:nth-child(1),
+.register-table td:nth-child(3),
+.register-table td:nth-child(n+4) {
+  text-align: center;
+}
+
+.register-table td:nth-child(2) {
+  text-align: left;
+}
+
+/* === Special Row Styling === */
+
+/* Row 62 - Light Yellow + Dark Red Text */
+.row-62 {
+  background-color: #fff9c4 !important;
+  font-weight: 700 !important;
+}
+
+.row-62 td {
+  color: #b71c1c !important;     /* Dark Red */
+}
+
+/* Row 63 - Light Green + Dark Text */
+.row-63 {
+  background-color: #d4edda !important;
+  font-weight: 700 !important;
+}
+
+.row-63 td {
+  color: #1b5e20 !important;     /* Dark Green */
+}
+
+/* Mobile Optimization */
+@media (max-width: 400px) {
+  .popup-content {
+    max-height: 95vh;
+    margin: 10px;
+  }
+  
+  .register-table th,
+  .register-table td {
+    padding: 10px 6px;
+    font-size: 1.35rem;
+  }
+  
+  .popup-header h2 {
+    font-size: 1.9rem;
+  }
+}
+</style>
+      </article>
+    </main>
+
+
+
+    <!-- 
+    - custom js link
+  -->
+    <script src="./assets/js/script.js" defer></script>
+
+    <!-- 
+    - ionicon link
+  -->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>
