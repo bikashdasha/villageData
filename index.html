@@ -172,7 +172,7 @@
 </div>
 
 <script>
-// Table Header (You can add more months later)
+// ===== TABLE HEADER =====
 const tableHeader = `
 <tr>
   <th>S.No</th>
@@ -182,7 +182,7 @@ const tableHeader = `
 </tr>
 `;
 
-// Table Body with better formatting
+// ===== TABLE BODY =====
 const tableData = `
 <tr><td>1</td><td>Gokula Dash (ଗୋକୁଳ ଦାଶ)</td><td>9090-549-450</td><td>X</td></tr>
 <tr><td>2</td><td>Anil Ojha (ଅନିଲ ଓଝା)</td><td>6371-691-425</td><td>100</td></tr>
@@ -250,25 +250,40 @@ const tableData = `
 <tr class="row-63"><td>63</td><td><b>Total</b></td><td><b>2601</b></td><td><b>--</b></td></tr>
 `;
 
-// Load Function
+// LOAD FUNCTION WITH DYNAMIC "X" HIGHLIGHT
 function loadTableData() {
   document.getElementById('tableHead').innerHTML = tableHeader;
-  document.getElementById('tableBody').innerHTML = tableData;
+  
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = tableData;
+
+  // Dynamically highlight cells with "X"
+  const rows = tbody.getElementsByTagName('tr');
+  for (let row of rows) {
+    const cells = row.getElementsByTagName('td');
+    // Start from 4th column (April and future months)
+    for (let i = 3; i < cells.length; i++) {
+      if (cells[i].textContent.trim() === 'X' || cells[i].textContent.trim() === 'x') {
+        cells[i].classList.add('x-cell');
+      }
+    }
+  }
 }
 
-// Button & Close
+// BUTTON
 document.getElementById('viewMoreBtn').addEventListener('click', function() {
   document.getElementById('registerPopup').style.display = 'flex';
   loadTableData();
 });
 
+// CLOSE
 document.getElementById('closePopup').onclick = () => {
   document.getElementById('registerPopup').style.display = 'none';
 };
 </script>
 
 <style>
-/* ====================== IMPROVED TABLE DESIGN ====================== */
+/* ====================== REGISTER POPUP ====================== */
 .popup-overlay {
   display: none;
   position: fixed;
@@ -283,7 +298,7 @@ document.getElementById('closePopup').onclick = () => {
 .popup-content {
   background: white;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1280px;
   max-height: 95vh;
   border-radius: 12px;
   overflow: hidden;
@@ -292,7 +307,7 @@ document.getElementById('closePopup').onclick = () => {
 
 .popup-header {
   padding: 20px 25px;
-  background: #4c27f4;
+  background: #006633;
   color: white;
   display: flex;
   justify-content: space-between;
@@ -329,9 +344,9 @@ document.getElementById('closePopup').onclick = () => {
 .register-table th,
 .register-table td {
   padding: 12px 10px;
-  border: 1px solid #666;
+  border: 1px solid #555;
+  white-space: nowrap;
   text-align: left;
-  vertical-align: middle;
 }
 
 .register-table th {
@@ -345,24 +360,29 @@ document.getElementById('closePopup').onclick = () => {
 }
 
 /* Fixed Bottom Rows */
-.row-62, .row-63 {
-  position: sticky;
-  bottom: 0;
-  z-index: 15;
+.row-62 { 
+  position: sticky; 
+  bottom: 48px; 
+  z-index: 15; 
+}
+.row-63 { 
+  position: sticky; 
+  bottom: 0; 
+  z-index: 16; 
 }
 
-.row-62 { bottom: 48px; }   /* Row 62 above Row 63 */
-
-/* Alignment */
+/* Column Alignment */
 .register-table td:nth-child(1),
 .register-table td:nth-child(3),
-.register-table td:nth-child(4) {
-  text-align: center;
-}
+.register-table td:nth-child(4) { text-align: center; }
 
-.register-table td:nth-child(2) {
-  text-align: left;
-  font-size: 1.4rem;
+.register-table td:nth-child(2) { text-align: left; }
+
+/* "X" Highlight - Light Red */
+.x-cell {
+  background-color: #ffebee !important;
+  color: #f80505 !important;
+  font-weight: 600;
 }
 
 /* Special Rows */
